@@ -1,8 +1,8 @@
-// DO YOUR MAGIC
-const express = require('express');
+const router = require('express').Router();
+
+
 const Cars = require('./cars-model');
-const mw = require('./cars-middleware');
-const router = express.Router();
+const {checkCarId,checkCarPayload,checkVinNumberUnique,checkVinNumberValid} = require('./cars-middleware');
 
 
 // [GET] /api/cars
@@ -20,12 +20,12 @@ router.get('/', async (req,res,next) => {
 });
 
 // [GET] /api/cars/:id
-router.get('/:id', mw.getById , (req,res) => {
-  res.json('single car with id');
+router.get('/:id',checkCarId, (req,res) => {
+  res.json(req.carData);
 });
 
 // [POST] /api/cars
-router.get('/', mw.create , (req,res) => {
+router.post('/',checkCarPayload,checkVinNumberUnique,checkVinNumberValid, (req,res) => {
   res.json('new car created');
 });
 
