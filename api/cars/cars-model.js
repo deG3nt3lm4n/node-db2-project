@@ -5,7 +5,6 @@ const getAll = () => {
 };
 
 const getById = (id) => {
-  // DO YOUR MAGIC
   return db('cars').where('id',id).first();
 };
 
