@@ -49,7 +49,7 @@ const checkVinNumberValid = (req, res, next) => {
   }else{
     next({
       status:400,
-      message:`vin ${req.body.id} is invalid`
+      message:`vin ${req.body.vin} is invalid`
     });
   }
 };
@@ -57,9 +57,14 @@ const checkVinNumberValid = (req, res, next) => {
 // async cause it invovles databse validation
 const checkVinNumberUnique =  async (req, res, next) => {
   try {
-
+    const existing = await Cars.getByVin(req.body.vin);
+    if(!existing){
+      next();
+    }else{
+      next({status: 400, message: `vin ${req.body.vin} already exists`});
+    }
   } catch (err) {
-    next(err)
+    next(err);
   }
 };
 

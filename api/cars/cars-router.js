@@ -25,8 +25,13 @@ router.get('/:id',checkCarId, (req,res) => {
 });
 
 // [POST] /api/cars
-router.post('/',checkCarPayload,checkVinNumberUnique,checkVinNumberValid, (req,res) => {
-  res.json('new car created');
+router.post('/',checkCarPayload,checkVinNumberUnique,checkVinNumberValid, async (req,res,next) => {
+  try {
+    const car = await Cars.create(req.body);
+    res.json(car);
+  } catch (err) {
+    next(err);
+  }
 });
 
 // error handling
